@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  web:
+    build:
+      context: ./docker
+    volumes:
+      - ./html/app:/var/www/html
+    container_name: 'cakephp3-5.6'    
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/webroot
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+
+  db:
+    image: mariadb
+    container_name: 'cakephp3-5.6-db'
+    restart: always
+    volumes:
+      - db-cakephp3-5.6-db:/var/lib/mysql
+    env_file:
+      - db.env
+volumes:
+  db-cakephp3-5.6-db:      
